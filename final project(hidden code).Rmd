@@ -1,0 +1,183 @@
+---
+title: "final project(hidden code)"
+output: html_document
+date: "2023-12-07"
+---
+
+```{r, echo=FALSE}
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+gun_violence <- read_delim("/Users/zzy/Desktop/firearm mortality in each state in 2021 .csv")
+
+gender <- read_delim("/Users/zzy/Desktop/gender ratio in each state in 2021.csv")
+
+wealth <- read_delim("/Users/zzy/Desktop/us-real-per-capita-gdp-2022-by-state.csv")
+
+weapon <- read_delim("/Users/zzy/Desktop/number-of-registered-weapons-us-2021-by-state.csv")
+```
+
+
+## 1.The distribution of gun violence in each state in US
+ 
+
+
+```{r, echo=FALSE}
+library(usmap)
+
+
+state_geometries <- statepop %>% 
+                    filter(full!="District of Columbia")
+violence_geometries <- merge(state_geometries, gun_violence, by.x = "full", by.y = "State", all.x = TRUE)
+             
+
+p <- plot_usmap(data = violence_geometries, values = "Death_Rate", color = "red") + 
+  scale_fill_continuous(name = "Death Rate", label = scales::comma) + 
+  theme(legend.position = "right")+
+  ggtitle("The Distribution of Gun Violence in Each State")
+
+p
+```
+
+
+## 2.The relationship between gender and gun violence 
+
+
+
+```{r, echo=FALSE}
+# merged data
+gender_violence <- gun_violence %>% 
+                   left_join(gender,by="State")
+
+
+
+gender_violence1 <- gender_violence %>%
+           pivot_longer(cols=c(Male_Ratio,Female_Ratio),
+                         names_to="gender",
+                          values_to="ratio")
+gender_violence1 %>% 
+  ggplot( aes(x = ratio, y =Death_Rate,color=gender)) +
+  geom_point()+
+    labs(title = "Relationship between Death Rates and Gender Ratio",
+       x = "Gender Ratio",
+       y = "Death Rate")
+
+```
+
+
+```{r, echo=FALSE}
+
+library(plotly)
+
+gender_violence %>% 
+  
+  plot_ly(x = ~Death_Rate,
+          y = ~Male_Ratio,
+          z = ~Female_Ratio,
+          text = ~State,
+          type = "scatter3d",
+           mode = "markers",
+          marker = list(size = 5)) %>%
+  layout(
+    scene = list(
+      xaxis = list(title = "Death Rate"),
+      yaxis = list(title = "Male Ratio"),
+      zaxis = list(title = "Female Ratio")
+    ),
+    title = "Relationship between Death Rates, Male Ratios, and Female Ratios"
+  )
+```
+
+
+## 3.The relationship between wealth and gun violence
+
+
+
+
+```{r, echo=FALSE}
+# merged data
+
+wealth_violence <- gun_violence %>% 
+                   left_join(wealth,by="State")
+
+wealth_violence %>% 
+  ggplot(aes(x = reorder(State, Real_GDP_per_Capita), y = Death_Rate, color = reorder(State, Real_GDP_per_Capita))) +
+  geom_line(aes(group = 1), alpha = 0.7) +
+  geom_point(aes(group = 1), size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, aes(group = 1), color = "yellow3", alpha = 0.5) +  # Adjust alpha here
+  labs(title = "Real GDP per Capita by State",
+       x = "Real GDP per Capita for states in increasing order",
+       y = "Death Rate") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line = element_line(color = "#95a5a6"),
+        text = element_text(family = "Arial", size = 10))
+```
+
+
+```{r, echo=FALSE}
+
+wealth_violence %>% 
+  
+ggplot( aes(x = reorder(State, Real_GDP_per_Capita), y = Death_Rate, fill = reorder(State, Real_GDP_per_Capita))) +
+  geom_bar(stat = "identity", color = "#2c3e50", alpha = 0.7) +
+  geom_smooth(method = "le")+
+  labs(title = "Real GDP per Capita and the death rate by State in 2021",
+       x = "Real_GDP_per_Capita for states in increasing order",
+       y = "Death Rate") +
+  theme_minimal() +
+  theme(panel.grid = element_blank(),
+        axis.line = element_line(color = "#95a5a6"),
+        text = element_text(family = "Arial", size = 10),
+        axis.text.x = element_blank())
+```
+
+## 4.The relationship between  number of firearms and gun violence
+
+
+
+
+```{r, echo=FALSE}
+# merged data
+
+weapon_violence <- gun_violence %>% 
+                   left_join(weapon,by="State")
+weapon_violence
+
+weapon_violence %>% 
+  
+ggplot( aes(x = reorder(State, Deaths), 
+                           y = Deaths, fill = State)) + 
+   geom_bar(stat = "identity",show.legend = FALSE) + 
+   labs(title = "Number of Deaths in 2021",
+        x = "State", y = "Number of Deaths") +
+  coord_flip()
+
+
+```
+
+```{r, echo=FALSE}
+weapon_violence %>% 
+  
+ggplot( aes(x = reorder(State,`Number_of_ Registered_Weapon` ), 
+                           y = `Number_of_ Registered_Weapon`, fill = State)) + 
+   geom_bar(stat = "identity",show.legend = FALSE) + 
+   labs(title = "Number of Registered Weapon in 2021",
+        x = "State", y = "Number of Registered Weapon") +
+  coord_flip()
+```
+
+
+```{r, echo=FALSE}
+weapon_violence %>% 
+  ggplot(aes(x = `Number_of_ Registered_Weapon`, y = Deaths, col = State)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, col = "blue", fullrange = TRUE) +
+  labs(title = "Scatterplot of Weapon vs Deaths",
+       x = "Number of Registered Weapon",
+       y = "Number of Deaths")
+```
