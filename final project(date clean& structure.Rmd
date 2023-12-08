@@ -1,0 +1,678 @@
+---
+title: "final project"
+output: html_document
+date: "2023-12-08"
+---
+
+## Data Cleaning and pre-processing
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+gun_violence <- read_delim("/Users/zzy/Desktop/firearm mortality in each state in 2021 .csv")
+
+gender <- read_delim("/Users/zzy/Desktop/gender ratio in each state in 2021.csv")
+
+
+gender_violence <- gun_violence %>% 
+                   left_join(gender,by="State")
+
+
+
+gender_violence1 <- gender_violence %>%
+           pivot_longer(cols=c(Male_Ratio,Female_Ratio),
+                         names_to="gender",
+                          values_to="ratio")
+gender_violence1 %>% 
+  ggplot( aes(x = ratio, y =Death_Rate,color=gender)) +
+  geom_point()+
+    labs(title = "Relationship between Death Rates and Gender Ratio",
+       x = "Gender Ratio",
+       y = "Death Rate")
+
+```
+
+  
+  In our second research question (The relationship between gender and gun violence), we use pivot_longer() add a new categorical variable "gender" and a new numerical variable ratio. Then we create a new data frame gender_violence1 which contains the "gender" and ratio. 
+  
+  
+  
+  
+
+
+## Introduction (2-3 pages), where you
+
+
+
+
+
+   In recent years, the intricate relationship between gun violence and socio-economic variables has emerged as a topic of profound importance and concern. This study delves into the multifaceted interplay between gun violence and key factors such as gender ratio, GDP per capita, the distribution of firearms, and the sheer number of guns within a population. Gun violence, a critical public health and safety issue, has varying manifestations and impacts across different socio-economic contexts.
+    
+   By exploring how economic conditions, gender dynamics, and accessibility to firearms contribute to the prevalence and nature of gun violence, this research aims to provide insightful analysis relevant for policymakers, public health officials, and communities. Understanding these dynamics is crucial for developing targeted, effective strategies to mitigate gun violence and enhance societal safety and well-being. Our investigation seeks to unpack these complex relationships, offering a nuanced perspective on how economic development, gender-specific trends, and gun distribution interact to shape the landscape of gun violence in various regions.
+
+
+
+
+
+#### What do we already know about this topic? This should be based on what you read from the media or literature, not on what do you do below!
+
+
+
+
+   
+   The topic of gun violence, when examined through the lenses of gender ratio, GDP per capita, distribution, and number of guns, is multifaceted and has been extensively covered in both media and scholarly literature. Studies and reports consistently highlight significant gender disparities in gun violence, with males more often involved as perpetrators and victims, particularly in violent crimes, while females are disproportionately affected in domestic violence incidents involving firearms. 
+    
+   Economic conditions also play a pivotal role; regions with lower GDP per capita frequently experience higher rates of gun violence, though this is not absolute, as affluent areas are not immune to such incidents. A critical factor is the distribution and accessibility of firearms; higher gun ownership rates correlate with increased gun violence, encompassing both legal and illegal firearms. Media coverage often emphasizes sensational incidents, potentially skewing public perception, whereas academic research provides a more nuanced understanding, exploring long-term trends and a range of contributing factors. 
+   
+  Comparative studies across different regions reveal how cultural, legal, and socio-economic variables influence gun violence prevalence. Beyond fatalities, the literature also delves into the broader impacts of gun violence on communities, including psychological, economic, and social repercussions, framing a complex picture of an issue that extends well beyond simple statistics and policy debates.
+
+
+
+
+   
+   
+#### Explain what exactly are you doing. This can be stated as questions you want to answer, or some kind of stories you want to tell. 
+  
+   
+   
+   
+   Our research project is dedicated to exploring various dimensions of gun violence in the United States through a series of focused inquiries. 
+    
+   Firstly, we aim to examine the relationship between gender and gun violence, investigating differences in involvement and victimization rates among genders.Secondly, we delve into the correlation between wealth, as indicated by GDP per capita, and gun violence, to understand how economic status affects gun-related incidents. Thirdly, our study will analyze geographical disparities by assessing the relationship between different U.S. states and the prevalence of gun violence, considering regional factors such as local gun laws and socio-economic conditions.
+     
+   Lastly, we seek to explore the distribution of gun violence in relation to the number of firearms, aiming to uncover whether a higher concentration of firearms correlates with increased gun violence. This comprehensive approach aims to shed light on the multifaceted nature of gun violence, providing valuable insights that could inform effective strategies for public safety and policy development. While we recognize the potential limitations posed by data availability, our goal is to adaptively uncover patterns and insights that contribute meaningfully to the understanding of gun violence in the United States.
+     
+
+
+     
+
+#### Explain why is it interesting–why should someone care? why should someone read your report?
+
+   
+   
+   
+   
+   Our research into the multifaceted nature of gun violence in the United States offers compelling insights for a diverse audience, making it a crucial read for those concerned with public safety, health, policy-making, and societal well-being. The study is particularly relevant in the context of growing public health and safety concerns, providing detailed analyses that are essential for citizens, law enforcement agencies, and policymakers seeking to develop effective strategies to mitigate gun violence.
+   
+   For academics, students, and researchers, the report serves as a rich educational resource, offering a comprehensive look at the socio-economic and cultural dynamics of gun violence. It delves into how factors such as wealth, gender, regional disparities, and firearm distribution intersect, thereby informing more nuanced public policies and community interventions. 
+Additionally, the report offers valuable insights for a global audience, placing the American experience of gun violence in an international context. By exploring this pressing issue through various lenses, our research not only highlights the complexity of gun violence but also underscores the importance of a multifaceted approach to understanding and addressing it, making the report an essential read for anyone interested in the broader implications of this critical societal issue.
+
+
+
+
+
+## Explain your Data
+
+
+
+
+
+#### Why do you use these datasets? 
+
+
+
+
+     
+   The selection of these datasets is aimed at conducting a thorough analysis of factors influencing gun violence at the state level in the United States. Each dataset adds a unique dimension crucial for understanding the complexities of this societal issue. By using these diverse datasets, the research seeks to gain a nuanced understanding of how gender dynamics, economic factors, firearm prevalence, and gun violence are interconnected. In general, these datasets provide a comprehensive perspective, allowing for a detailed and nuanced analysis of the multifaceted nature of gun violence at the state level.
+
+
+
+
+#### Where do your datasets originate from? Who collected data?
+
+
+
+
+1.Gun Violence Dataset(2021) US: CDC compiles and reports firearm mortality data.
+Source:https://www.cdc.gov/nchs/pressroom/sosmap/firearm_mortality/firearm.htm
+
+
+2.Sex Ratio Dataset(2021) US: KFF gathers demographic information, including sex ratio.
+Source: https://www.kff.org/other/state-indicator/distribution-by-sex/?currentTimeframe=1&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
+
+
+3.Real GDP per Capita Dataset(2022) US: Statista collects economic data, specifically real GDP per capita.
+Source: https://www/statista.com/statistics/248063/per-capita-us-real-gross-domestic-product-gdp-by-state/
+
+
+4.Number of Registered Weapons Dataset(2021) US: Statista compiles data on the number of registered weapons.
+Source: https://www.statista.com/statistics/215655/number-of-registered-weapons-in-the-us-by-state/
+
+
+  These organizations are reputable and well-established, often specializing in collecting and providing data related to health, demographics, economics, and other relevant fields. Their expertise contributes to the reliability and accuracy of the datasets used in the research.
+
+
+
+
+
+#### The data usage permissions: are the data freely available for everyone? Are there certain restrictions on who can access data, or for what purpose it can be used (e.g.non-commercial only)?
+
+
+
+
+
+  The CDC typically provides public access to its data, and usage is generally unrestricted. However, it's always advisable to review the specific terms of use on the CDC website to ensure compliance. Meanwhile, KFF often provides free public access to its data for research and informational purposes. Users should refer to KFF's terms of use to confirm any specific restrictions. However, Statista offers data for public use, but there may be limitations on the extent of access to certain details or features. Users should review Statista's terms of use for specific guidelines.
+
+
+
+
+
+#### What are the datasets about? What is the population and what is the sample?
+
+
+
+
+
+
+1.Gun Violence Dataset(2021) US:  This dataset contains information on firearm mortality rates in each U.S. state for the year 2021. It provides insights into the prevalence and impact of gun violence.The population is the entire United States, and the dataset includes firearm mortality rates for each individual state. The sample consists of all U.S. states, and the dataset provides data on firearm mortality rates for each state.
+
+
+2.Sex Ratio Dataset(2021) US:  The dataset focuses on the distribution of the population by sex in each U.S. state for the year 2021. It offers insights into gender demographics. The population is the entire United States, and the dataset includes information on the sex ratio for each individual state.The sample consists of all U.S. states, and the dataset provides data on the distribution of the population by sex for each state.
+
+
+3.Real GDP per Capita Dataset(2022) US: This dataset provides information on the real gross domestic product (GDP) per capita in each U.S. state for the year 2022. It offers insights into the economic wealth of states. The population is the entire United States, and the dataset includes real GDP per capita figures for each individual state. The sample consists of all U.S. states, and the dataset provides data on real GDP per capita for each state.
+
+
+4.Number of Registered Weapons Dataset(2021) US: The dataset focuses on the number of registered weapons in each U.S. state for the year 2021. It provides insights into the prevalence of registered firearms.The population is the entire United States, and the dataset includes information on the number of registered weapons for each individual state.The sample consists of all U.S. states, and the dataset provides data on the number of registered weapons for each state.
+
+
+
+
+
+#### Discuss any data quality issues you encountered (It should also include a description of your final datasets).
+
+
+
+
+
+
+
+   In the course of our research investigating the multifaceted factors influencing gun violence at the state level in the United States, we encountered a notable data quality issue related to the temporal alignment of our datasets. To maintain consistency across variables, we aimed to use datasets all derived from the year 2021. However, we faced a challenge in obtaining wealth distribution data for this specific year. 
+   
+   Despite exhaustive efforts, we could not locate wealth distribution data for 2021, leading us to make the decision to substitute it with the available dataset from 2022. While this substitution allowed us to proceed with our analysis, it introduces a potential limitation to the rigor of our research. The temporal misalignment between the wealth distribution data (2022) and other datasets (2021) may compromise the accuracy of temporal comparisons, given that economic conditions and policies can exhibit dynamic shifts over time. We acknowledge the importance of this limitation and have taken steps to transparently document our rationale for the substitution, emphasizing the need for cautious interpretation of our findings.
+   
+  Future research endeavors in this area should prioritize obtaining wealth distribution data for 2021 when it becomes available to enhance the precision and robustness of analyses in understanding the intricate relationships between gender dynamics, economic factors, firearm prevalence, and gun violence at the state level in the United States.
+
+
+
+
+
+
+
+#### What do rows represent in your final datasets? How many observations do you have? What are the relevant variables and how are they coded?
+
+
+
+
+
+
+   In each of the final datasets—Gun Violence Dataset (2021) US, Sex Ratio Dataset (2021) US, Real GDP per Capita Dataset (2022) US, and Number of Registered Weapons Dataset (2021) US—each row represents a distinct state in the United States, resulting in a total of 50 observations for each dataset to cover all states. 
+   
+  The Gun Violence Dataset encompasses relevant variables such as 'Year' (coded as '2021'), 'State' (categorical with full state names), 'Abbreviate of State' (categorical with state abbreviations), 'Death Rate' (numeric representing the rate of deaths due to gun violence), and 'Deaths' (numeric indicating the total number of deaths). In the Sex Ratio Dataset, key variables include 'State' and 'Abbreviate' (categorical), 'Male Ratio' and 'Female Ratio' (numeric, denoting gender ratios), and 'Total Ratio' (numeric, indicating the total gender ratio). The Real GDP per Capita Dataset features 'State' and 'Abbreviate' (categorical) and 'Real GDP per Capita' (numeric, representing economic wealth per person). 
+  
+  Lastly, the Number of Registered Weapons Dataset contains 'State' and 'Abbreviate' (categorical) and 'Number of Registered Weapons' (numeric, denoting the count of registered firearms). This coding structure ensures the datasets are ready for rigorous statistical analysis, facilitating a comprehensive exploration of factors influencing states in the United States.
+
+
+
+
+
+#### Are there any missings, non-plausible values, or other quality issues in the relevant variables? How many?
+
+
+
+
+
+   The presence of locations in some datasets that are not valid states like Washington, D.C. (District of Columbia), Puerto Rico, Guam, the Virgin Islands, American Samoa, and the Northern Mariana Islands, leading to missing values during the merging process, raises significant data quality concerns. In evaluating these datasets, it is crucial to identify and address missing or non-plausible values in the relevant state variables.
+
+
+
+
+
+
+# We will discuss the methods, results and findings based on our research question individually
+
+
+
+## 1.The relationship between gender and gun violence
+
+
+
+### Methods:
+
+
+
+#### Which variables did you include, why?
+
+
+
+
+
+
+   I included few variables, which are male ration, female ration, location, and death rates.I want to figure out the relationship between gender and death rates and another relationship between location and death rates.Does these two variables are correlated
+
+
+
+
+
+#### how did you process your data, why?
+
+
+
+
+
+
+  I merged two datasets (mortality datasets, and gender datasets). In one datasets and uploaded it. I mutate female ratio and male ratio to one variable (gender) ,which can help me draw and make figures conveniently and effectively.  I used the geom plot to draw this figure.  I think this way can make the audience understand what is going on and have a clear visual representation.
+ 
+ 
+ 
+ 
+ 
+#### How did you select your sample?
+    
+    
+    
+    
+  I selected my sample from the internet, and I took some consideration of an example of the final project proposal. 
+
+
+
+
+
+
+#### any technical decisions you made, such as either to remove missings, or replace missing values with another one?
+
+   
+   
+   
+   
+   I have removed invalid data and missing values. To be specifically, in my first dataset(gender dataset) it has 53 states in variable location. As we know, the U.S only has 51 states.  And some of the variables show na. So I directly removed it. I have also made some changes about the variables location. It is too long to upload all the full names of U.S states. And the x-axis of my plot would be messy. So I used abbreviations of U.S states.
+
+ 
+
+
+
+#### These questions should discuss trade-offs you face with such decisions. 
+
+
+
+
+
+
+   When I decided to plot a graph, I viewed the excellent example of the professor. The excellent examples have one thing in common that they are presenting their relationship of variables with one graph. However, I have three variables in the same graph. So, I created a three dimensional graph to show the relationship between each variable.And created two images that show the relationship between male ratio ,female ratio between death rate separately. I think this way would have a better understanding for the viewer.
+
+
+
+
+
+
+### Results:
+
+
+
+
+#### What does data tell you?
+    
+    
+    
+    
+I think the data didn’t tell us about any relationships between male ratio, female ratio and death rates. There is no connection or correlation between two variables. And it shows nothing special or noticeable.
+
+
+
+
+
+### Findings:
+
+
+
+
+#### What do the results tell you regarding your question you asked in introduction, or about the story line you want to focus on?
+
+
+
+
+
+I think the results didn’t tell me something about correlation between these two variables. Based on the graph,  we can’t find strong correlation and causation, I think it tells us nothing.
+
+
+
+
+
+#### What are the limitations–how far do you think you can extend your claims or story?
+
+
+
+
+I think the limitation would be the correctness of our final project might be interfered with missing or not practical data. So, it would have some error and cause the viewer to interpret the research wrongly. 
+
+
+
+
+
+
+#### Give directions for future work–what analysis/data you might need to extend your story further?
+
+
+
+
+I think I will get the source from a powerful, reliable, and official path, such as scholar, academic, national, public , government website to get my datasets. It can greatly prevent misinterpretation and error .
+
+
+
+
+## 2.The relationship between wealth and gun violence 
+
+
+
+
+### Methods:
+
+
+
+
+#### Which variables did you include, why?
+
+
+
+
+
+   In my analysis, I focused on two key variables: Deaths versus Real GDP per capita, state by state. In such an eventuality, it is imperative that the real gdp per capita determines the economic position of a region toward every individual involved. However, that the mortality rate exposes a healthier status across several states.
+
+
+
+
+#### How did you process your data, why?
+
+
+
+
+   To process normal data, first I use read csv to read the data, and then join the data in order to draw the histogram which can assist me. Processing common data processing tasks went through most of them. This implied reducing the variables together with normalizing them in order to compare equally across different jurisdiction. Moreover, these steps are crucial in making pertinent and credible conclusions. I employed acceding order GDP statistics to analyze the connections among Real GDP per Capita and the number of deaths within disparate nations during my research. In addition, I used visuals like histogram graphs that depicted the disparities in regions more bluntly. The purpose of the selected particular variable was therefore intentional. I wanted to know how the economic success relates to one’s health, using this information as a basis to formulate a policy guideline aimed at improving welfare at regional level.
+
+
+
+
+
+#### How did you select your sample?
+
+
+
+
+
+   In my work, I did an extensive search of Google for suitable datasets in relation to my research topic. I finally chose a data set where everything remained consistent and uniform over time as well as variants factors wise. An inner join between GDP and gun datasets served to establish a combined sample. With this in mind I now set out to investigate any possible linkages between economics and death rate starting with GNP against death rate. By meticulously selecting this data, I ensure a strong basis for analysis on which my research insights are more reliable and relevant.
+
+
+
+
+
+#### Any technical decisions you did, such as either to remove missings, or replace missing values with another one?
+
+
+
+
+
+   In R Studio, I employed the read.csv function to import my data and utilized inner join to merge relevant datasets, ensuring comprehensive analysis. For handling missing values, I made a technical decision to retain them for transparency, recognizing their potential significance in understanding data patterns. The visualization was executed using ggplot.
+
+
+
+
+
+### Results:
+
+
+
+
+
+####   what does data tell you?
+   
+   
+   
+   
+   
+   
+   The graphical analysis lends strong support to our argument that GDP has a profound effect on mortality rates. On the whole, the histogram illustrates a decline proving that there is an association between poverty and reduced deaths. For instance, Mississippi, which shows the lowest level of GDP, is in line with the highest mortality rate. However, in comparison, Massachusetts, New York, and Washington are located on the histogram’s right whereby they have lower mortality rates but high GDP. The above spatial representation depicts a visual illustration of this inverse relationship which exists between the economic prosperity and mortality. Such discoveries show how important economic aspects in health outcomes are, giving useful tips to policy makers and scholars alike. Visualization is an interesting tale that exposes regional variations in the relationship between GDP and death rates among states. Such nuanced analysis of individual states broadens our knowledge about how different economic inequalities affect various dimensions of public health that can be used for tailored interventions and guided policy decisions. Thus, overall, the graph-based evidence strengthens both the fact that our initial hypothetical assumption is true and that regionally specific components are important in studying the complex relationships between socioeconomic factors and mortality rates.
+
+
+
+
+
+
+#### What do the results tell you regarding the question you asked in the introduction or about the storyline you want to focus on?
+
+
+
+
+
+
+These findings lend significant credence to the original assumption that high GDP levels translate into low mortality indices. This would be illustrated by an overall histogram that shows a downward pattern which validates the relationship between better economic situation and lower mortality rate. For instance, in states that have a low GDP, like Mississippi, there is relatively high mortality rate while highly developed states like Massachusetts, New York and Washington boast of relatively low mortalities. This follows the general storyline, which is that economic disparities are a causal agent of health inequalities.
+
+
+
+
+
+
+#### What are the limitations—how far do you think you can extend your claims or story?
+
+
+
+
+
+   
+   Although the findings demonstrate strong correlations, it cannot be concluded that cause is demonstrated. Alternatively, it would be important to consider other factors that may also cause higher or lower death rates such as healthcare access and other social determinants. A longitudinal study is required for one to comprehend the dynamic characteristics of these associations. Also, the focus on United States states may not capture the whole picture and complexities of the global or national settings. For this reason, the claims being made should be taken with care and further nuanced studies should be performed as to what are the contributing factors.
+
+
+
+
+
+
+#### Give directions for future work—what analysis/data might you need to extend your story further?
+
+
+
+
+
+
+   Further investigations must explore diverse links between GDP and mortality beyond economic measures. This would make comparative analyses with international data and give a broader view of global health trends. Going deeper into substate regional variations and distinct socio-economic contexts would contribute further to the comprehension of revealed tendencies.
+
+
+
+
+
+
+
+## 3.The relationship between gun violence and number of firearms in US
+
+
+
+
+
+
+###  Methods:  
+
+
+   
+   
+   
+   
+   For my part, I applied to firearm mortality number and number of registered weapons as I will be discussing about the relationship between these two variables. Moreover, compared to our research question, I chose these two data 
+because they are more directly related to our problem. By merging these two sets of data and drawing related pictures, it may be the fastest way for us to explore this research question. 
+ 
+ 
+ 
+ 
+ 
+ 
+####  how did you process your data, why? 
+
+
+
+
+
+
+
+   First I use the readr package to read the csv file. Then I merged the data from the two files to facilitate my next step, which is to use the equation command in ggplot2 to draw a histogram. After these months of running in with Rstudio, I think that if you want to import a data into Rstudio completely without damage and have a very convenient visual presentation, the best way is to store the data file as a csv file. The fastest way to import that I have learned in the current course is to use the readr package. 
+  
+   After confirming my task assignment, I first thought about the ultimate purpose of presenting this set of data. Through subjective inference, I think the relationship between the two sets of data will be proportional and linear, but since there is no time variable in the two sets of data, a good way to present the data difference is to use a dot plot. In this way, I was able to explore the relationship between gun distribution and gun fatality rates, 
+and ultimately help people decide whether to control guns. 
+
+
+
+
+
+#### how did you select your sample? 
+
+
+  
+  
+  
+  Faced with the deaths for gunshot, I chose to search for official and professionalwebsites on Google to find my data for the project. Since the death rate and gun distribution rate are relatively important data and involve national security issues, there must be official procedures to unify, keep records, display them publicly. According to my subjective common sense, the more guns are distributed in a place, the more gun mortalities there are. And the data has a proportional and 
+relatively linear trend. After keeping this in mind, and after carefully selecting data comparison styles and data differences, I found this pertinent and reliable data and database. 
+
+
+
+
+
+#### any technical decisions you did, such as either to remove missings, or replace missing values with another one? 
+
+
+
+
+
+
+   Even in the relatively accurate official data, there may be outliers that hinder the 
+linearity of the results. If I want to clearly show the proportional linear 
+relationship between the two variables, I may need to remove the missing values, 
+but for the sake of data integrity, I choose to keep them. I also chose to retain 
+these missing values when using ggplot2 for visualization. 
+ 
+ 
+ 
+ 
+ 
+###  Results:
+
+
+
+
+
+   My results constitute a dot plot. The results of this dot plot strongly support my hypothesis. The number of guns directly determines the number of people killed by gunfire. The number of recorded weapons and gunfire deaths of cases have a positive proportion. As more guns are distributed, more people are killed by gunfire. As an example, as of 2021, the number of guns in Texas has reached a staggering 1,006,555, and the number of gun deaths in this city has also been a full 4,613 people. If the number of people in the state was not high, the death rate would definitely be the highest among all states. In contrast, Rhode Island has only 4,887 registered guns, and its death toll is only 64. This dot plot fully demonstrates the direct proportional relationship between the number of deaths and the number of registered guns, and also proves the importance of gun quantity control policies. If this data study is used as a reference for policy decisions, then the result must be that gun control has a very large necessity to be enhanced or enacted. 
+ 
+ 
+ 
+ 
+
+### Findings:
+
+
+
+
+
+
+#### what do the results tell you regarding of your question you asked in introduction, or about the story line you want to focus on? 
+
+
+
+
+
+
+   As stated in the previous hypothesis, the number of guns is directly proportional to the gun fatality rate. States such as Florida or Texas with a high number of firearms distribution have high shooting casualty rates, while remote areas like Rhode Island, which do not have many guns, do not have as many shooting casualty rates. This further supports this hypothesis. 
+
+
+
+
+
+#### What are the limitations–how far do you think you can extend your claims or story?
+
+
+
+
+
+   Although I tried my best to select the most official and authoritative data and the most reference year. But my database still inevitably has some limitations. Although the nearly linear relationship and the direct proportional relationship can largely confirm the above assumptions, some restrictions will still lead to bias. 
+   
+   Perhaps obtaining more information can make this relationship line more nearly linear and prove the two studied above. The variables have a direct proportional relationship, which may refute this hypothesis. The most significant limitation is that the data clearly indicates "Registered weapon", and according to my more research, there are gang wars and black markets in some states. Once these sources are available, the number of registered weapons may be very different from the true number of all weapons. Perhaps some states have many unregistered smuggled weapons that are not reported, causing their shooting 
+death rates to be unexpectedly higher. 
+ 
+
+
+
+
+
+#### Give directions for future work–what analysis/data you might need to extend your story further? 
+
+   
+   
+   
+   
+   It will be more difficult to extend this research in the future because more unregistered firearms need to be collected, and their sources are very complex and difficult to track. However, the future research direction is to find more sources of unregistered firearms to ensure more accurate data. 
+
+
+
+
+
+## 4.The distribution of gun violence in each state in US
+
+
+
+
+
+
+### Methods:
+
+    
+   
+   
+   
+   In my research on the distribution of gun violence in each U.S. state using the Gun Violence Dataset (2021) US, I employed the tidyverse package in R Studio, utilizing the read_delim method for data processing. The variables included in my analysis were the year, full name of the state, state abbreviation, death rate related to gun violence, and the total number of deaths attributed to gun violence. I chose these variables as they represent key aspects of the gun violence phenomenon at the state level. 
+    
+  To process the data, I leveraged tidyverse functions for data manipulation, cleaning, and visualization. I selected the entire dataset as my sample to comprehensively capture gun violence trends across all 50 states in 2021. As part of technical decisions, I examined and addressed missing values, aiming to ensure the robustness of my analysis. For instance, I replaced missing values with appropriate alternatives, considering the impact on the integrity of the results. 
+   The decision-making process involved trade-offs, balancing the need for completeness with the accuracy of the dataset. While my current analysis focuses on descriptive statistics and visualization, more complex statistical methods may be explored in subsequent stages of the research to uncover deeper patterns and relationships in the data. These methodological choices collectively aim to provide a comprehensive and accurate portrayal of the distribution of gun violence in each U.S. state, acknowledging the inherent trade-offs and considerations in data processing and analysis.
+
+
+
+
+
+
+### Results:
+
+
+
+
+
+#### what does data tell you?
+
+
+
+
+
+
+   In my analysis of the Gun Violence Dataset (2021) US using R Studio and the tidyverse package, the results reveal insightful patterns in the distribution of gun violence across U.S. states in the year 2021. Through the creation of visualizations such as choropleth maps, the death rate related to gun violence and the total number of deaths were effectively communicated for each state. These visualizations allowed for a quick and intuitive understanding of the disparities and concentration of gun violence incidents.
+   
+   The data showcased significant variations in death rates and total deaths, emphasizing the importance of considering both metrics for a comprehensive assessment. States with higher populations tended to have larger total death numbers, but the death rate provided a normalized measure, offering insights into the relative impact of gun violence within each state. The geographic representation facilitated the identification of regional trends and potential hotspots, contributing to a nuanced understanding of the broader narrative surrounding gun violence in the United States.
+
+   Moreover, the results highlighted states with comparatively lower death rates but higher total deaths, indicating potential areas for targeted interventions despite seemingly lower per capita impact. This underscores the importance of utilizing multiple metrics to draw comprehensive conclusions about the severity and distribution of gun violence.
+In addition to visualizations, summary statistics provided a quantitative overview of the dataset, offering insights into the average death rate and total deaths across all states. This statistical approach reinforced the patterns observed in the visual representations and provided a numerical foundation for comparative analyses.
+
+   Overall, the results from this analysis contribute valuable information to the broader discussion on gun violence in the United States, offering a geospatial and quantitative perspective that enhances our understanding of the distribution of incidents at the state level in 2021.
+ 
+ 
+ 
+ 
+   
+### Findings:
+
+   
+   
+   
+   
+   
+   
+   The results obtained from the analysis of the Gun Violence Dataset (2021) US shed light on the intricate patterns and disparities in the distribution of gun violence across U.S. states in 2021. The visualizations and summary statistics revealed that while some states experienced a higher total number of deaths due to gun violence, others had elevated death rates per capita, emphasizing the multifaceted nature of this societal issue. 
+   
+   The findings align with the research question and storyline introduced in the beginning, providing a nuanced understanding of how the impact of gun violence varies across states, considering both absolute numbers and rates. The limitations of the study primarily stem from the dataset's reliance on reported incidents, potentially underrepresenting the true extent of gun violence due to unreported cases or discrepancies in reporting standards among states. 
+To extend this narrative further, future work could involve incorporating additional datasets that capture the socio-economic and demographic context of each state. Additionally, conducting a temporal analysis to assess trends over multiple years would offer a more dynamic perspective. 
+  
+  
+  
+  
+ 
