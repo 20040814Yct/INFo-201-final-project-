@@ -18,7 +18,6 @@ In conclusion, the study offers a multifaceted view of gun violence in the U.S.,
 
 <img width="887" alt="截屏2023-12-08 23 52 00" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/03f1760e-5ada-4b6f-996c-e67d6fc35370">
 <img width="886" alt="截屏2023-12-08 23 52 07" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/3f59d2b0-fe83-4d91-9af8-d9a30c4bb2b9">
-<img width="927" alt="截屏2023-12-08 23 52 16" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/37c19be6-261b-4958-a1ab-a1b673867baf">
-<img width="901" alt="截屏2023-12-08 23 52 24" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/87eaa4fb-c09f-4bb9-a710-ce2cb7471b69">
-
+<img width="973" alt="截屏2023-12-09 00 16 49" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/d9242425-e547-4190-87cc-599416c6faac">
+<img width="875" alt="截屏2023-12-09 00 16 35" src="https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/fb075152-20fc-4f66-9b7d-f8105fcb48bb">
 
