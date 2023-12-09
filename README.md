@@ -16,7 +16,9 @@ However, the study acknowledges certain limitations, particularly in data availa
 
 In conclusion, the study offers a multifaceted view of gun violence in the U.S., highlighting its ties with economic, social, and policy factors. The findings are instrumental for formulating targeted interventions and public policies. The research paves the way for future studies, emphasizing the importance of comprehensive data analysis in understanding and addressing the complexities of gun violence.
 
-![WechatIMG6367](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/d8eacf7d-a92b-4c4d-9c34-b590112c14bb)
-![WechatIMG6371](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/b6417c89-de18-4565-9a28-8f434755d1e4)
--e5d950dd72c9)
-![WechatIMG6368](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/fe2d8779-7905-4b95-b1e0-1d5e827aab9a)
+
+![WechatIMG6385](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/8f5a2e6f-532b-4a15-b664-c62ff8c264e2)
+![WechatIMG6384](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/ed694357-0c4c-4884-bc3b-37df54f06d6f)
+
+![WechatIMG6382](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/173aa6e3-e841-4195-86f2-1a9c902e2222)
+![WechatIMG6383](https://github.com/20040814Yct/INFo-201-final-project-/assets/151678035/b0600162-010a-49cf-9e5f-681e9b5b12f9)
